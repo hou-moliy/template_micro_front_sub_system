@@ -1,0 +1,7 @@
+build/*.js
+src/assets
+public
+dist
+src/icons
+node_modules/
+/src/microApp/publicPath.js
