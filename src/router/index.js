@@ -100,8 +100,11 @@ export const constantRoutes = [
       },
     ],
   },
-  // 404 page 必须放到最后
-  { path: "*", redirect: "/404", hidden: true },
+  {
+    path: "/404",
+    component: () => import("@/views/404"),
+    hidden: true,
+  },
 ];
 export const asyncRoutes = [];
 const createRouter = () => new Router({
