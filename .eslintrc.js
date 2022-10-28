@@ -39,6 +39,7 @@ module.exports = {
         // always（默认）：举例在语句末尾需要分号
         // never：举例不允许加分号
         // 举例=>  "semi":[2,'never'] 表示不允许有分号，有分号就会报错
+        indent: ["error", 2], // 2个空格缩进
         quotes: [1, "double"], // 建议使用双引号
         semi: [1, "always"], // 建议以分号结尾
         "comma-dangle": ["error", "always-multiline"], // 对象字面量项尾是逗号
