@@ -5,10 +5,12 @@ module.exports = {
         "es6": true,
         "node": true, // 解决__dirname报错
     },
+
     "extends": [ // 检查包括了那些规范，通过这个节点可以配置使用 内置规范 还是 第三方规范
         "eslint:recommended",
         "plugin:vue/essential"
     ],
+
     "overrides": [
         {
             files: ["src/views/index.vue", "src/views/**/index.vue"],
@@ -17,18 +19,22 @@ module.exports = {
             },
         },
     ],
+
     "globals": {
         "Atomics": "readonly",
         "SharedArrayBuffer": "readonly",
         "process": true // 解决process读取问题
     },
+
     "parserOptions": {
         "ecmaVersion": 2018,
         "parser": "babel-eslint", // 解决import导入问题
     },
+
     "plugins": [
         "vue"
     ],
+
     "rules": {
         // 规则说明：
         // 第一个参数：
@@ -51,5 +57,26 @@ module.exports = {
         'no-console': process.env.NODE_ENV === 'prod' ? 'warn' : 'off',
         'no-debugger': process.env.NODE_ENV === 'prod' ? 'warn' : 'off',
         camelcase: ["error", { properties: "never", ignoreDestructuring: true }], // 使用驼峰命名，不检查属性名称，不检查解构标识符
-    }
+    },
+
+    overrides: [
+      {
+        files: [
+          'src/views/index.vue',
+          'src/views/**/index.vue'
+        ],
+        rules: {
+          'vue/multi-word-component-names': 0
+        }
+      },
+      {
+        files: [
+          '**/__tests__/*.{j,t}s?(x)',
+          '**/tests/unit/**/*.spec.{j,t}s?(x)'
+        ],
+        env: {
+          jest: true
+        }
+      }
+    ]
 };

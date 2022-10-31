@@ -59,7 +59,7 @@ export default {
           const newStyle = this.updateStyle(
             this[variable],
             originalCluster,
-            themeCluster
+            themeCluster,
           );
 
           let styleTag = document.getElementById(id);

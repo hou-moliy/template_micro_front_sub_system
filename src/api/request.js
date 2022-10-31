@@ -24,7 +24,7 @@ service.interceptors.request.use(
   },
   error => {
     Promise.reject(error);
-  }
+  },
 );
 
 // 响应拦截器
@@ -38,7 +38,7 @@ service.interceptors.response.use(res => {
         confirmButtonText: "重新登录",
         cancelButtonText: "取消",
         type: "warning",
-      }
+      },
     ).then(() => {
       store.dispatch("LogOut").then(() => {
         location.reload(); // 为了重新实例化vue-router对象 避免bug
@@ -53,15 +53,15 @@ service.interceptors.response.use(res => {
     return res.data;
   }
 },
-  error => {
+error => {
 
-    Message({
-      message: error.message,
-      type: "error",
-      duration: 5 * 1000,
-    });
-    return Promise.reject(error);
-  }
+  Message({
+    message: error.message,
+    type: "error",
+    duration: 5 * 1000,
+  });
+  return Promise.reject(error);
+},
 );
 
 export default service;

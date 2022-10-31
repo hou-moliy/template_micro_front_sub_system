@@ -10,14 +10,14 @@ export default {
   inserted (el, binding) {
     const { value, modifiers } = binding;
     console.log(modifiers, "binding");
-    const all_permission = "*:*:*";
+    const allPermission = "*:*:*";
     const roles = store.getters && store.getters.roles;
 
     if (value && value instanceof Array && value.length > 0) {
       const permissionRoles = value;
 
       const hasPermissions = roles.some(permission => {
-        return all_permission === permission || permissionRoles.includes(permission);
+        return allPermission === permission || permissionRoles.includes(permission);
       });
 
       if (!hasPermissions) {

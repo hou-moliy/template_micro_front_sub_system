@@ -21,7 +21,7 @@ export default {
           attrs: {
             "icon-class": icon,
           },
-        })
+        }),
       );
     }
 
@@ -32,8 +32,8 @@ export default {
           {
             slot: "title",
           },
-          title
-        )
+          title,
+        ),
       );
     }
     return vnodes;

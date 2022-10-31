@@ -76,7 +76,7 @@ module.exports = {
           threshold: 10240,// 对超过10k的数据压缩
           deleteOriginalAssets: false, // 不删除源文件
           minRatio: 0.8,
-        })
+        }),
       );
       // 开启分离js
       config.optimization = {
@@ -164,7 +164,7 @@ module.exports = {
               },
             });
           config.optimization.runtimeChunk("single");
-        }
+        },
       );
   },
 };
