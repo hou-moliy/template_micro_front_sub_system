@@ -19,6 +19,9 @@
     <a class="document-btn"
        target="_blank"
        href="https://panjiachen.github.io/vue-element-admin-site/zh/job/">内推招聘</a>
+
+    <h4>主应用传过来的数据{{$store.state.global.name}}</h4>
+    <button @click="changeName">修改主应用数据name</button>
   </div>
 </template>
 
@@ -42,6 +45,13 @@ export default {
         { title: "webpack4（下）", href: "https://juejin.im/post/5b5d6d6f6fb9a04fea58aabc" },
       ],
     };
+  },
+  methods: {
+    changeName () {
+      this.$store.dispatch("global/setGlobalStateActions", {
+        name: "王麻子",
+      });
+    },
   },
 };
 </script>

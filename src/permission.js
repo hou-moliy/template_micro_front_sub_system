@@ -8,7 +8,7 @@ import defaultSettings from "@/settings";
 NProgress.configure({ showSpinner: false });
 document.title = defaultSettings.title;
 // 白名单
-const whiteList = ["/login"];
+const whiteList = ["/login", "/404"];
 // 是否在乾坤环境
 const __qiankun__ = window.__POWERED_BY_QIANKUN__;
 router.beforeEach((to, from, next) => {
@@ -33,7 +33,6 @@ const getAsyncRoutes = (to, next) => {
     store.dispatch("permission/generateRoutes", { roles }).then(accessRoutes => {
       // 根据roles权限生成可访问的路由表
       if (!__qiankun__) { // 非乾坤环境
-        debugger;
         accessRoutes.push({ path: "*", redirect: "/404", hidden: true });
       }
       router.addRoutes(accessRoutes); // 动态添加可访问路由表
@@ -53,7 +52,6 @@ const handleNoToken = (to, next) => {
   } else {
     if (__qiankun__) { // 判断是否在乾坤环境
       // window.history.pushState("http://10.4.5.0:9528/test/admin/login");
-      next(`/login?redirect=${to.path}`);
     } else {
       next(`/login?redirect=${to.path}`);
     }

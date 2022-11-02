@@ -4,10 +4,6 @@ import App from "@/App.vue";
 import store from "@/store";
 import { constantRoutes, asyncRoutes } from "@/router";
 Vue.use(VueRouter);
-/**
- * name 导入官方通信方法
- */
-// import appStore from './app-store/app-store'
 // 判断是否在微应用试用下
 const __qiankun__ = window.__POWERED_BY_QIANKUN__;
 let instance = null;
@@ -34,7 +30,10 @@ const microMain = () => {
      */
     async mount (props) {
       // 注册应用间通信  props是基座传输过来的值，可进行token等存储使用
-      Vue.prototype.$MicroMount = props;
+      console.log(props, "子应用");
+      await props.registerGlobalModule(store, props); // 将主应用的状态操作注册到子应用中
+      store.state.user = store.state.global;
+      console.log(store.state.user, "子应用");
       // 注册微应用实例化函数
       render(props);
     },
@@ -64,7 +63,6 @@ const microMain = () => {
  * description {String} 子应用路由前缀 主应用请求获取注册表后，从服务端拿到路由数据
  */
 const render = ({ name, container } = {}) => {
-  console.log(name, container, "pppp");
   let routerAll = [];
   if (asyncRoutes !== undefined || asyncRoutes !== null) {
     routerAll = constantRoutes.concat(asyncRoutes);
