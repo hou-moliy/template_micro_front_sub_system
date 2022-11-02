@@ -6,7 +6,11 @@
 }
 
 .iconfont {
-  font-family: "iconfont" !important;
+  font-family:  "iconfont", Helvetica,
+    Arial,
+    Verdana,
+    Tahoma,
+    sans-serif;;
   font-size: 16px;
   font-style: normal;
   -webkit-font-smoothing: antialiased;
