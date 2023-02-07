@@ -1,5 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
+import topicRoute from "./modules/topicRoute";
+
+const QianKun = window.__POWERED_BY_QIANKUN__;
+
 Vue.use(Router);
 
 /* Layout */
@@ -34,12 +38,13 @@ export const constantRoutes = [
     hidden: true,
   },
   {
-    path: "/",
+    path: "",
     component: Layout,
-    redirect: "/dashboard",
+    redirect: "/index",
     children: [{
-      path: "/dashboard",
-      name: "dashboard",
+      path: "index",
+      name: "首页",
+      meta: { title: "首页", icon: "dashboard", noCache: true, affix: true },
       component: () => import("@/views/dashboard/index"),
     }],
   },
@@ -100,6 +105,7 @@ export const constantRoutes = [
       },
     ],
   },
+  QianKun ? topicRoute : { path: "" },
   {
     path: "/404",
     component: () => import("@/views/404"),

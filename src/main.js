@@ -11,8 +11,12 @@ import "@/icons"; // icon
 import "./permission"; // permission control
 import "@/icons/iconfont/iconfont.css";
 import Directives from "./directives";
+import { checkPermi } from "@/utils/permission";
+
 Vue.use(Directives);
 Vue.use(ElementUI, { locale });
+// v-show，v-if 检查某个代码块是否可见的时候使用
+Vue.prototype.checkPermi = checkPermi;
 console.log("进入子容器2");
 // 微前端配置文件注入
 import micro from "@/microApp";

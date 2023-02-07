@@ -18,9 +18,13 @@ const permission = {
   actions: {
     // 生成路由
     generateRoutes ({ commit }) {
+      const menuBelong = process.env.VUE_APP_PROJECT_PATH;
       return new Promise(resolve => {
         // 向后端请求路由数据
         getRouters().then(res => {
+          res.data = res.data.filter((item) => {
+            return menuBelong.includes(item.menuBelong);
+          });
           const accessedRoutes = filterAsyncRouter(res.data);
           commit("SET_ROUTES", accessedRoutes);
           resolve(accessedRoutes);

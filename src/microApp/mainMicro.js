@@ -81,4 +81,7 @@ const render = ({ name, container } = {}) => {
     render: h => h(App),
   }).$mount(container ? container.querySelector("#app") : "#app");
 };
+if (!window.__POWERED_BY_QIANKUN__) {
+  render();
+}
 export { microMain, render };

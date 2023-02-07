@@ -7,7 +7,7 @@ const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
 // 解决H5缓存问题
 let filePath = "js/"; // 打包文件存放文件夹路径
-let Timestamp = "." + new Date().getTime();// 时间戳
+let Timestamp = "." + new Date().getTime(); // 时间戳
 function resolve (dir) {
   return path.join(__dirname, dir);
 }
@@ -28,11 +28,31 @@ module.exports = {
     proxy: {
       // 公用代理-admin
       [process.env.VUE_APP_BASE_API]: {
-        // target: `http://10.4.5.252:9503/admin`, // 测试服务器
-        target: "https://t133.ebupt.com.cn/rjhTest/manageServer", // 实验室
+        // target: "http://10.4.7.251:9504/admin", // lw-陕西
+        // target: "http://10.4.4.170:9503/adminTest", // lw-集中管理平台
+        target: "http://10.1.61.13:9501/admin/api", // 实验室
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: "",
+        },
+      },
+      // 公用代理-file
+      [process.env.VUE_APP_FILE_BASE_API]: {
+        // target: "http://10.4.4.170:9888/material", // lw
+        target: "http://10.1.61.13:9501/material/api", // 实验室
+        changeOrigin: true,
+        pathRewrite: {
+          ["^" + process.env.VUE_APP_FILE_BASE_API]: "",
+        },
+      },
+      [process.env.VUE_APP_WX_BASE_API]: {
+        // target: 'https://t133.ebupt.com.cn/',
+        // target: "http://10.1.63.203:8501/weixin-shx", // dd
+        // target: "https://rcs.telinovo.com/eApi/weixin-shx", // dd
+        target: "https://t133.ebupt.com.cn/test/new/api/weixinLnK8stestv2-1-3", // dd
+        changeOrigin: true,
+        pathRewrite: {
+          ["^" + process.env.VUE_APP_WX_BASE_API]: "",
         },
       },
       // 公共的静态资源代理
@@ -61,7 +81,7 @@ module.exports = {
         new UglifyJsPlugin({
           uglifyOptions: {
             compress: {
-              drop_debugger: true,// 生产环境自动删除debugger
+              drop_debugger: true, // 生产环境自动删除debugger
               drop_console: true, // 生产环境自动删除console
               pure_funcs: ["console.log"],
             },
@@ -73,14 +93,14 @@ module.exports = {
         new CompressionWebpackPlugin({
           algorithm: "gzip",
           test: /\.js$|\.html$|\.json$|\.css/,
-          threshold: 10240,// 对超过10k的数据压缩
+          threshold: 10240, // 对超过10k的数据压缩
           deleteOriginalAssets: false, // 不删除源文件
           minRatio: 0.8,
         }),
       );
       // 开启分离js
       config.optimization = {
-        nodeEnv: false,// 解决webpack5不能自定义环境名称问题
+        nodeEnv: false, // 解决webpack5不能自定义环境名称问题
         runtimeChunk: "single",
         splitChunks: {
           chunks: "all",
@@ -90,7 +110,9 @@ module.exports = {
             vendor: {
               test: /[\\/]node_modules[\\/]/,
               name (module) {
-                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+                const packageName = module.context.match(
+                  /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
+                )[1];
                 return `npm.${packageName.replace("@", "")}`;
               },
             },
@@ -100,7 +122,7 @@ module.exports = {
       config.plugins = [...config.plugins];
     } else {
       config.optimization = {
-        nodeEnv: false,// 解决webpack5不能自定义环境名称问题
+        nodeEnv: false, // 解决webpack5不能自定义环境名称问题
       };
     }
   },
@@ -113,10 +135,7 @@ module.exports = {
       },
     ]);
     config.plugins.delete("prefetch");
-    config.module
-      .rule("svg")
-      .exclude.add(resolve("src/icons"))
-      .end();
+    config.module.rule("svg").exclude.add(resolve("src/icons")).end();
     config.module
       .rule("icons")
       .test(/\.svg$/)
@@ -129,43 +148,41 @@ module.exports = {
       })
       .end();
 
-    config
-      .when(process.env.NODE_ENV !== "development",
-        config => {
-          config
-            .plugin("ScriptExtHtmlWebpackPlugin")
-            .after("html")
-            .use("script-ext-html-webpack-plugin", [{
-              inline: /runtime\..*\.js$/,
-            }])
-            .end();
-          config
-            .optimization.splitChunks({
-              chunks: "all",
-              cacheGroups: {
-                libs: {
-                  name: "chunk-libs",
-                  test: /[\\/]node_modules[\\/]/,
-                  priority: 10,
-                  chunks: "initial",
-                },
-                elementUI: {
-                  name: "chunk-elementUI",
-                  priority: 20,
-                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/,
-                },
-                commons: {
-                  name: "chunk-commons",
-                  test: resolve("src/components"),
-                  minChunks: 3,
-                  priority: 5,
-                  reuseExistingChunk: true,
-                },
-              },
-            });
-          config.optimization.runtimeChunk("single");
+    config.when(process.env.NODE_ENV !== "development", config => {
+      config
+        .plugin("ScriptExtHtmlWebpackPlugin")
+        .after("html")
+        .use("script-ext-html-webpack-plugin", [
+          {
+            inline: /runtime\..*\.js$/,
+          },
+        ])
+        .end();
+      config.optimization.splitChunks({
+        chunks: "all",
+        cacheGroups: {
+          libs: {
+            name: "chunk-libs",
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            chunks: "initial",
+          },
+          elementUI: {
+            name: "chunk-elementUI",
+            priority: 20,
+            test: /[\\/]node_modules[\\/]_?element-ui(.*)/,
+          },
+          commons: {
+            name: "chunk-commons",
+            test: resolve("src/components"),
+            minChunks: 3,
+            priority: 5,
+            reuseExistingChunk: true,
+          },
         },
-      );
+      });
+      config.optimization.runtimeChunk("single");
+    });
   },
 };
 

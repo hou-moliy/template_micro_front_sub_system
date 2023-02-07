@@ -6,7 +6,6 @@ import { getToken } from "@/utils/auth";
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
   // 超时
   timeout: 300000,
 });
@@ -15,10 +14,6 @@ service.interceptors.request.use(
   config => {
     if (getToken()) {
       config.headers["Authorization"] = "Bearer " + getToken(); // 让每个请求携带自定义token 请根据实际情况自行修改
-    }
-    if (config.url.indexOf("wechat/") > -1) {
-      config.url = config.url.replace("/wechat", "");
-      config.baseURL = process.env.VUE_APP_WX_BASE_API;
     }
     return config;
   },
@@ -40,7 +35,7 @@ service.interceptors.response.use(res => {
         type: "warning",
       },
     ).then(() => {
-      store.dispatch("LogOut").then(() => {
+      store.dispatch("user/logout").then(() => {
         location.reload(); // 为了重新实例化vue-router对象 避免bug
       });
     });
@@ -53,15 +48,15 @@ service.interceptors.response.use(res => {
     return res.data;
   }
 },
-error => {
+  error => {
 
-  Message({
-    message: error.message,
-    type: "error",
-    duration: 5 * 1000,
-  });
-  return Promise.reject(error);
-},
+    Message({
+      message: error.message,
+      type: "error",
+      duration: 5 * 1000,
+    });
+    return Promise.reject(error);
+  },
 );
 
 export default service;

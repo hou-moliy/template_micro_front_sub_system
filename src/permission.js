@@ -21,7 +21,7 @@ router.beforeEach((to, from, next) => {
     if (hasToken) {
       rolesLen ? next() : getAsyncRoutes(to, next);
     } else {
-      handleNoToken();
+      handleNoToken(to, next);
     }
   }
 });

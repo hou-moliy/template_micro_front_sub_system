@@ -1,4 +1,5 @@
 import request from "./request";
+const baseURL = process.env.VUE_APP_BASE_API || "/admin";
 
 // 登录方法
 export function login (username, password, code, uuid) {
@@ -12,6 +13,7 @@ export function login (username, password, code, uuid) {
     url: "/common/login",
     method: "post",
     data: data,
+    baseURL
   });
 }
 
@@ -20,6 +22,7 @@ export function getInfo () {
   return request({
     url: "/common/getInfo",
     method: "get",
+    baseURL
   });
 }
 // 退出方法
@@ -27,6 +30,7 @@ export function logout () {
   return request({
     url: "/common/logout",
     method: "post",
+    baseURL
   });
 }
 
@@ -35,5 +39,6 @@ export function getCodeImg () {
   return request({
     url: "/common/captchaImage",
     method: "get",
+    baseURL
   });
 }
