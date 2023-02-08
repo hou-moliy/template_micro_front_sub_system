@@ -1,9 +1,8 @@
 import Vue from "vue";
 import Router from "vue-router";
-import topicRoute from "./modules/topicRoute";
-
-const QianKun = window.__POWERED_BY_QIANKUN__;
-
+import modules from "./modules";
+const __qiankun__ = window.__POWERED_BY_QIANKUN__;
+let routesList;
 Vue.use(Router);
 
 /* Layout */
@@ -25,7 +24,11 @@ import Layout from "@/layout";
     activeMenu: '/example/list'  如果设置了path，侧边栏会突出显示你设置的路径
   }
  */
-
+if (__qiankun__) {
+  routesList = modules;
+} else {
+  routesList = [];
+}
 /**
  * constantRoutes
  * 没有权限要求的基页
@@ -48,64 +51,7 @@ export const constantRoutes = [
       component: () => import("@/views/dashboard/index"),
     }],
   },
-  {
-    path: "/example",
-    component: Layout,
-    redirect: "/example/table",
-    name: "Example",
-    meta: { title: "Example", icon: "el-icon-s-help", roles: ["editor"] },
-    children: [
-      {
-        path: "table",
-        name: "Table",
-        component: () => import("@/views/table/index"),
-        meta: { title: "Table", icon: "table", roles: ["editor"] },
-      },
-      {
-        path: "tree",
-        name: "Tree",
-        component: () => import("@/views/tree/index"),
-        meta: { title: "Tree", icon: "tree", roles: ["editor"] },
-      },
-    ],
-  },
-  {
-    path: "/form",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        name: "Form",
-        component: () => import("@/views/form/index"),
-        meta: { title: "Form", icon: "form" },
-      },
-    ],
-  },
-  {
-    path: "/documentationMenu",
-    component: Layout,
-    children: [
-      {
-        path: "documentation",
-        component: () => import("@/views/documentation/index"),
-        name: "Documentation",
-        meta: { title: "Documentation", icon: "documentation", affix: true },
-      },
-    ],
-  },
-  {
-    path: "/tabMenu",
-    component: Layout,
-    children: [
-      {
-        path: "tab",
-        component: () => import("@/views/tab/index"),
-        name: "Tab",
-        meta: { title: "Tab", icon: "tab" },
-      },
-    ],
-  },
-  QianKun ? topicRoute : { path: "" },
+  ...routesList,
   {
     path: "/404",
     component: () => import("@/views/404"),
