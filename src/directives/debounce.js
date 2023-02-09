@@ -19,7 +19,6 @@ export default {
         timerFlag = false;
       }
       timer = setTimeout(() => {
-        // binding.value();
         timerFlag = true;
       }, binding.arg || 1000);
     });

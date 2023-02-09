@@ -6,6 +6,6 @@ export const getRouters = () => {
   return request({
     url: "/common/getRouters",
     method: "get",
-    baseURL
+    baseURL,
   });
 };

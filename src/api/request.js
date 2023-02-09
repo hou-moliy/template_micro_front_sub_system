@@ -47,16 +47,14 @@ service.interceptors.response.use(res => {
   } else {
     return res.data;
   }
+}, error => {
+  Message({
+    message: error.message,
+    type: "error",
+    duration: 5 * 1000,
+  });
+  return Promise.reject(error);
 },
-  error => {
-
-    Message({
-      message: error.message,
-      type: "error",
-      duration: 5 * 1000,
-    });
-    return Promise.reject(error);
-  },
 );
 
 export default service;

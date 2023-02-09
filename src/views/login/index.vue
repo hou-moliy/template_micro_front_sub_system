@@ -53,7 +53,7 @@
           />
         </el-input>
         <div class="login-code">
-          <img :src="codeUrl" @click="getCode" />
+          <img :src="codeUrl" @click="getCode" alt="" />
         </div>
       </el-form-item>
       <el-checkbox
@@ -228,7 +228,7 @@ export default {
   width: 100%;
   text-align: center;
   color: #fff;
-  font-family: Arial;
+  font-family: Arial, sans-serif;
   font-size: 12px;
   letter-spacing: 1px;
 }

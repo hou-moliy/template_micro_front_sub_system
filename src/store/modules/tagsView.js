@@ -57,7 +57,7 @@ const mutations = {
   UPDATE_VISITED_VIEW: (state, view) => {
     for (let v of state.visitedViews) {
       if (v.path === view.path) {
-        v = Object.assign(v, view);
+        Object.assign(v, view);
         break;
       }
     }
@@ -66,7 +66,6 @@ const mutations = {
 
 const actions = {
   addView ({ dispatch }, view) {
-    // debugger;
     dispatch("addVisitedView", view);
     dispatch("addCachedView", view);
   },
