@@ -119,6 +119,11 @@ export default {
     $route: {
       handler: function (route) {
         this.redirect = route.query && route.query.redirect;
+        for (let key in route.query) {
+          if (key !== "redirect") {
+            this.redirect = this.redirect ? `${route.query.redirect}&${key}=${route.query[key]}` : `${route.query.redirect}?${route.query[key]}`;
+          }
+        }
       },
       immediate: true,
     },
