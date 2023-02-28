@@ -6,18 +6,23 @@ import "nprogress/nprogress.css";
 import { getToken } from "@/utils/auth";
 import defaultSettings from "@/settings";
 NProgress.configure({ showSpinner: false });
+document.title = defaultSettings.title;
 // 白名单
-const whiteList = ["/login"];
-router.beforeEach(async (to, from, next) => {
+const whiteList = ["/login", "/404"];
+// 是否在乾坤环境
+const __qiankun__ = window.__POWERED_BY_QIANKUN__;
+router.beforeEach((to, from, next) => {
   NProgress.start();
-  document.title = defaultSettings.title;
   const hasToken = getToken();
+  const rolesLen = store.getters.roles.length;
   if (to.path === "/login") {
     next();
-  } else if (hasToken) {
-    handleToErrorPage(to, next);
   } else {
-    whiteList.indexOf(to.path) !== -1 ? next() : next(`/login?redirect=${to.path}`);
+    if (hasToken) {
+      rolesLen ? next() : getAsyncRoutes(to, next);
+    } else {
+      handleNoToken(to, next);
+    }
   }
 });
 
@@ -27,6 +32,9 @@ const getAsyncRoutes = (to, next) => {
     const roles = res.roles;
     store.dispatch("permission/generateRoutes", { roles }).then(accessRoutes => {
       // 根据roles权限生成可访问的路由表
+      if (!__qiankun__) { // 非乾坤环境
+        accessRoutes.push({ path: "*", redirect: "/404", hidden: true });
+      }
       router.addRoutes(accessRoutes); // 动态添加可访问路由表
       next({ ...to, replace: true }); // hack方法 确保addRoutes已完成
     });
@@ -38,12 +46,15 @@ const getAsyncRoutes = (to, next) => {
       });
     });
 };
-const handleToErrorPage = (to, next) => {
-  const rolesLen = store.getters.roles.length;
-  if (rolesLen) {
+const handleNoToken = (to, next) => {
+  if (whiteList.indexOf(to.path) !== -1) {
     next();
   } else {
-    getAsyncRoutes(to, next);
+    if (__qiankun__) { // 判断是否在乾坤环境
+      // window.history.pushState("http://10.4.5.0:9528/test/admin/login");
+    } else {
+      next(`/login?redirect=${to.path}`);
+    }
   }
 };
 

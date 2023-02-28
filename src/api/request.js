@@ -6,7 +6,6 @@ import { getToken } from "@/utils/auth";
 axios.defaults.headers["Content-Type"] = "application/json;charset=utf-8";
 // 创建axios实例
 const service = axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
   // 超时
   timeout: 300000,
 });
@@ -36,7 +35,7 @@ service.interceptors.response.use(res => {
         type: "warning",
       },
     ).then(() => {
-      store.dispatch("LogOut").then(() => {
+      store.dispatch("user/logout").then(() => {
         location.reload(); // 为了重新实例化vue-router对象 避免bug
       });
     });
