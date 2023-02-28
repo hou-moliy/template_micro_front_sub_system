@@ -56,12 +56,6 @@
           <img :src="codeUrl" @click="getCode" alt="" />
         </div>
       </el-form-item>
-      <el-checkbox
-        v-model="loginForm.rememberMe"
-        style="margin: 0px 0px 25px 0px"
-      >
-        记住密码
-      </el-checkbox>
       <el-form-item style="width: 100%">
         <el-button
           :loading="loading"
@@ -119,7 +113,7 @@ export default {
     $route: {
       handler: function (route) {
         this.redirect = route.query && route.query.redirect;
-        for (let key in route.query) {
+        for (const key in route.query) {
           if (key !== "redirect") {
             this.redirect = this.redirect ? `${route.query.redirect}&${key}=${route.query[key]}` : `${route.query.redirect}?${route.query[key]}`;
           }

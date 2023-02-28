@@ -1,3 +1,4 @@
+"use strict";
 const path = require("path");
 const defaultSettings = require("./src/settings.js");
 // 微前端子项目配置注入
@@ -6,19 +7,19 @@ const { microConfig } = require("./src/microApp/microConfig.js");
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CompressionWebpackPlugin = require("compression-webpack-plugin");
 // 解决H5缓存问题
-let filePath = "js/"; // 打包文件存放文件夹路径
-let Timestamp = "." + new Date().getTime(); // 时间戳
+const filePath = "js/"; // 打包文件存放文件夹路径
+const Timestamp = "." + new Date().getTime();// 时间戳
 function resolve (dir) {
   return path.join(__dirname, dir);
 }
+
 const name = defaultSettings.title; // page title
-const port = process.env.port || process.env.npm_config_port || 9528; // dev port
+const port = process.env.port || process.env.npm_config_port || 9529; // dev port
 module.exports = {
   publicPath: process.env.VUE_APP_PROJECT_PATH || "/",
   outputDir: "dist",
   assetsDir: "static",
   productionSourceMap: false,
-  lintOnSave: false,
   devServer: {
     port: port,
     overlay: {
@@ -26,11 +27,14 @@ module.exports = {
       errors: true,
     },
     proxy: {
+      // 公共的静态资源代理
+      [process.env.VUE_APP_STATIC_IMGS]: {
+        target: "http://10.1.63.203:8050/",
+        changeOrigin: true,
+      },
       // 公用代理-admin
       [process.env.VUE_APP_BASE_API]: {
-        // target: "http://10.4.7.251:9504/admin", // lw-陕西
-        // target: "http://10.4.4.170:9503/adminTest", // lw-集中管理平台
-        target: "http://10.1.61.13:9501/admin/api", // 实验室
+        target: "http://10.1.35.207:8180/admin", // 集中管理平台
         changeOrigin: true,
         pathRewrite: {
           ["^" + process.env.VUE_APP_BASE_API]: "",
@@ -44,21 +48,6 @@ module.exports = {
         pathRewrite: {
           ["^" + process.env.VUE_APP_FILE_BASE_API]: "",
         },
-      },
-      [process.env.VUE_APP_WX_BASE_API]: {
-        // target: 'https://t133.ebupt.com.cn/',
-        // target: "http://10.1.63.203:8501/weixin-shx", // dd
-        // target: "https://rcs.telinovo.com/eApi/weixin-shx", // dd
-        target: "https://t133.ebupt.com.cn/test/new/api/weixinLnK8stestv2-1-3", // dd
-        changeOrigin: true,
-        pathRewrite: {
-          ["^" + process.env.VUE_APP_WX_BASE_API]: "",
-        },
-      },
-      // 公共的静态资源代理
-      [process.env.VUE_APP_STATIC_IMGS]: {
-        target: "http://10.1.63.203:8050/",
-        changeOrigin: true,
       },
     },
   },
@@ -110,9 +99,7 @@ module.exports = {
             vendor: {
               test: /[\\/]node_modules[\\/]/,
               name (module) {
-                const packageName = module.context.match(
-                  /[\\/]node_modules[\\/](.*?)([\\/]|$)/,
-                )[1];
+                const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
                 return `npm.${packageName.replace("@", "")}`;
               },
             },
@@ -126,7 +113,7 @@ module.exports = {
       };
     }
   },
-  chainWebpack (config) {
+  chainWebpack: config => {
     config.plugin("preload").tap(() => [
       {
         rel: "preload",
@@ -135,7 +122,10 @@ module.exports = {
       },
     ]);
     config.plugins.delete("prefetch");
-    config.module.rule("svg").exclude.add(resolve("src/icons")).end();
+    config.module
+      .rule("svg")
+      .exclude.add(resolve("src/icons"))
+      .end();
     config.module
       .rule("icons")
       .test(/\.svg$/)
@@ -148,44 +138,45 @@ module.exports = {
       })
       .end();
 
-    config.when(process.env.NODE_ENV !== "development", config => {
-      config
-        .plugin("ScriptExtHtmlWebpackPlugin")
-        .after("html")
-        .use("script-ext-html-webpack-plugin", [
-          {
-            inline: /runtime\..*\.js$/,
-          },
-        ])
-        .end();
-      config.optimization.splitChunks({
-        chunks: "all",
-        cacheGroups: {
-          libs: {
-            name: "chunk-libs",
-            test: /[\\/]node_modules[\\/]/,
-            priority: 10,
-            chunks: "initial",
-          },
-          elementUI: {
-            name: "chunk-elementUI",
-            priority: 20,
-            test: /[\\/]node_modules[\\/]_?element-ui(.*)/,
-          },
-          commons: {
-            name: "chunk-commons",
-            test: resolve("src/components"),
-            minChunks: 3,
-            priority: 5,
-            reuseExistingChunk: true,
-          },
+    config
+      .when(process.env.NODE_ENV !== "development",
+        config => {
+          config
+            .plugin("ScriptExtHtmlWebpackPlugin")
+            .after("html")
+            .use("script-ext-html-webpack-plugin", [{
+              inline: /runtime\..*\.js$/,
+            }])
+            .end();
+          config
+            .optimization.splitChunks({
+              chunks: "all",
+              cacheGroups: {
+                libs: {
+                  name: "chunk-libs",
+                  test: /[\\/]node_modules[\\/]/,
+                  priority: 10,
+                  chunks: "initial",
+                },
+                elementUI: {
+                  name: "chunk-elementUI",
+                  priority: 20,
+                  test: /[\\/]node_modules[\\/]_?element-ui(.*)/,
+                },
+                commons: {
+                  name: "chunk-commons",
+                  test: resolve("src/components"),
+                  minChunks: 3,
+                  priority: 5,
+                  reuseExistingChunk: true,
+                },
+              },
+            });
+          config.optimization.runtimeChunk("single");
         },
-      });
-      config.optimization.runtimeChunk("single");
-    });
+      );
   },
 };
-
 module.exports.devServer.headers = {
   // 配置跨域 必须
   // 由于qiankun内部请求都是fetch来请求资源，因此子应用必须容许跨域

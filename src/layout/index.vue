@@ -1,13 +1,12 @@
 <template>
-  <div :class="classObj"
-       v-if="!isMicroApp"
-       class="app-wrapper">
-    <div v-if="device === 'mobile' && sidebar.opened"
-         class="drawer-bg"
-         @click="handleClickOutside" />
+  <div :class="classObj" class="app-wrapper">
+    <div
+      v-if="device === 'mobile' && sidebar.opened"
+      class="drawer-bg"
+      @click="handleClickOutside"
+    />
     <sidebar class="sidebar-container" />
-    <div :class="{ hasTagsView: needTagsView }"
-         class="main-container">
+    <div :class="{ hasTagsView: needTagsView }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
         <navbar />
         <tags-view v-if="needTagsView" />
@@ -18,7 +17,6 @@
       </right-panel>
     </div>
   </div>
-  <AppMain v-else />
 </template>
 
 <script>
@@ -38,11 +36,6 @@ export default {
     TagsView,
   },
   mixins: [ResizeMixin],
-  data () {
-    return {
-      isMicroApp: window.__POWERED_BY_QIANKUN__,
-    };
-  },
   computed: {
     ...mapState({
       sidebar: (state) => state.app.sidebar,

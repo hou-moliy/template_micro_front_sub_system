@@ -32,7 +32,6 @@ const microMain = () => {
       // 注册应用间通信  props是基座传输过来的值，可进行token等存储使用
       console.log(props, "子应用");
       await props.registerGlobalModule(store, props); // 将主应用的状态操作注册到子应用中
-      store.state.user = store.state.global;
       console.log(store.state.user, "子应用");
       // 注册微应用实例化函数
       render(props);

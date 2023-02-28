@@ -5,7 +5,6 @@ directivesFiles.keys().forEach(key => {
   if (key === "./index.js") { return; }
   directives[key.replace(/(\.\/|\.js)/g, "")] = (directivesFiles(key).default || directivesFiles(key));
 });
-console.log(directives, "directives");
 export default {
   install (Vue) {
     Object.keys(directives).forEach((key) => {

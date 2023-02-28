@@ -1,6 +1,5 @@
 import request from "./request";
 const baseURL = process.env.VUE_APP_BASE_API || "/admin";
-
 // 登录方法
 export function login (username, password, code, uuid) {
   const data = {

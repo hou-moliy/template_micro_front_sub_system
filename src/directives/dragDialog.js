@@ -21,7 +21,6 @@ export default {
         return (dom, attr) => dom.currentStyle[attr];
       }
       return (dom, attr) => getComputedStyle(dom, false)[attr];
-
     })();
 
     dialogHeaderEl.onmousedown = (e) => {

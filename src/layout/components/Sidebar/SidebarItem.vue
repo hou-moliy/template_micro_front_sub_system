@@ -83,7 +83,6 @@ export default {
         }
         this.onlyOneChild = item;
         return true;
-
       });
 
       if (showingChildren.length === 1) {

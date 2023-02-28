@@ -24,7 +24,7 @@ Vue.config.productionTip = false;
 const __qiankun__ = window.__POWERED_BY_QIANKUN__;
 let bootstrap, mount, unmount = null;
 if (__qiankun__) {
-  let microApp = micro.microMain();
+  const microApp = micro.microMain();
   bootstrap = microApp.bootstrap;
   unmount = microApp.unmount;
   mount = microApp.mount;
@@ -38,5 +38,4 @@ if (__qiankun__) {
 }
 //  导出微应用生命周期
 export { bootstrap, mount, unmount };
-
 

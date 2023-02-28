@@ -2,17 +2,17 @@
 // 表格时间格式化
 export function formatDate (cellValue) {
   if (cellValue === null || cellValue === "") { return ""; }
-  let date = new Date(cellValue);
-  let year = date.getFullYear();
-  let month =
+  const date = new Date(cellValue);
+  const year = date.getFullYear();
+  const month =
     date.getMonth() + 1 < 10
       ? "0" + (date.getMonth() + 1)
       : date.getMonth() + 1;
-  let day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
-  let hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
-  let minutes =
+  const day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+  const hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+  const minutes =
     date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
-  let seconds =
+  const seconds =
     date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
   return (
     year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds
@@ -21,14 +21,14 @@ export function formatDate (cellValue) {
 
 // 时间格式化，东八区
 export function formatDateByTZ (cellValue) {
-  let time1 = new Date(cellValue).getTime();
-  let time = new Date(time1);
-  let y = time.getFullYear();
-  let m = time.getMonth() + 1;
-  let d = time.getDate();
-  let h = time.getHours();
-  let mm = time.getMinutes();
-  let s = time.getSeconds();
+  const time1 = new Date(cellValue).getTime();
+  const time = new Date(time1);
+  const y = time.getFullYear();
+  const m = time.getMonth() + 1;
+  const d = time.getDate();
+  const h = time.getHours();
+  const mm = time.getMinutes();
+  const s = time.getSeconds();
   return (
     y +
     "-" +
@@ -66,21 +66,19 @@ export function byteLength (str) {
   let s = str.length;
   for (let i = str.length - 1; i >= 0; i--) {
     const code = str.charCodeAt(i);
-    if (code > 0x7f && code <= 0x7ff) { s++; }
-    else if (code > 0x7ff && code <= 0xffff) { s += 2; }
+    if (code > 0x7f && code <= 0x7ff) { s++; } else if (code > 0x7ff && code <= 0xffff) { s += 2; }
   }
   return s;
 }
 export function cleanArray (actual) {
   const newArray = [];
-  for (let contract of actual) {
+  for (const contract of actual) {
     if (contract) {
       newArray.push(contract);
     }
   }
   return newArray;
 }
-
 
 export function param (json) {
   if (!json) { return ""; }
@@ -107,7 +105,6 @@ export function param2Obj (url) {
     "\"}",
   );
 }
-
 
 export function html2Text (val) {
   const div = document.createElement("div");
@@ -186,7 +183,6 @@ export function debounce (func, wait, immediate) {
   };
 }
 
-
 export function deepClone (source) {
   if (!source && typeof source !== "object") {
     throw new Error("error arguments", "deepClone");
@@ -206,7 +202,6 @@ export function uniqueArr (arr) {
   return Array.from(new Set(arr));
 }
 
-
 export function createUniqueString () {
   const timestamp = +new Date() + "";
   const randomNum = parseInt((1 + Math.random()) * 65536) + "";
@@ -216,7 +211,6 @@ export function createUniqueString () {
 export function hasClass (ele, cls) {
   return !!ele.className.match(new RegExp("(\\s|^)" + cls + "(\\s|$)"));
 }
-
 
 export function addClass (ele, cls) {
   if (!hasClass(ele, cls)) { ele.className += " " + cls; }
@@ -232,7 +226,7 @@ export function removeClass (ele, cls) {
 export function makeMap (str, expectsLowerCase) {
   const map = Object.create(null);
   const list = str.split(",");
-  for (let contract of list) {
+  for (const contract of list) {
     if (contract) {
       map[contract] = true;
     }
@@ -309,7 +303,7 @@ export function fullOpen (n = 1, m = 100) {
 // 根据对象数组中某一属性删除该项
 export function removeByValue (arr, attr, value) {
   let index = 0;
-  for (let i in arr) {
+  for (const i in arr) {
     if (arr[i][attr] === value) {
       index = i;
       arr.splice(index, 1);
@@ -319,8 +313,7 @@ export function removeByValue (arr, attr, value) {
 }
 // 数组传字符串，字符串转数组
 export function array2String (formdata, changeArr) {
-  let tempObj = {};
-
+  const tempObj = {};
   for (const key in formdata) {
     if (Object.hasOwnProperty.call(formdata, key)) {
       if (changeArr.includes(key) && Array.isArray(formdata[key])) {

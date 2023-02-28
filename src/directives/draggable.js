@@ -8,13 +8,13 @@ export default {
   inserted: function (el) {
     el.style.cursor = "move";
     el.onmousedown = function (e) {
-      let disx = e.pageX - el.offsetLeft;
-      let disy = e.pageY - el.offsetTop;
+      const disx = e.pageX - el.offsetLeft;
+      const disy = e.pageY - el.offsetTop;
       document.onmousemove = function (e) {
         let x = e.pageX - disx;
         let y = e.pageY - disy;
-        let maxX = document.body.clientWidth - parseInt(window.getComputedStyle(el).width);
-        let maxY = document.body.clientHeight - parseInt(window.getComputedStyle(el).height);
+        const maxX = document.body.clientWidth - parseInt(window.getComputedStyle(el).width);
+        const maxY = document.body.clientHeight - parseInt(window.getComputedStyle(el).height);
         if (x < 0) {
           x = 0;
         } else if (x > maxX) {

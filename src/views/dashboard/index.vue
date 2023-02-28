@@ -1,7 +1,6 @@
 <template>
   <div class="container">
-    <h3>这里是子应用</h3>
-    <img :src="welcome" alt="" class="welcome" />
+    <img :src="welcome" class="welcome" alt="" />
   </div>
 </template>
 

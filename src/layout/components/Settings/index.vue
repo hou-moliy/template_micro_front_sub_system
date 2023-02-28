@@ -5,26 +5,25 @@
 
       <div class="drawer-item">
         <span>主题颜色</span>
-        <theme-picker style="float: right; height: 26px; margin: -3px 8px 0 0"
-                      @change="themeChange" />
+        <theme-picker
+          style="float: right; height: 26px; margin: -3px 8px 0 0"
+          @change="themeChange"
+        />
       </div>
 
       <div class="drawer-item">
         <span>开启 Tags-Views</span>
-        <el-switch v-model="tagsView"
-                   class="drawer-switch" />
+        <el-switch v-model="tagsView" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
         <span>固定 Header</span>
-        <el-switch v-model="fixedHeader"
-                   class="drawer-switch" />
+        <el-switch v-model="fixedHeader" class="drawer-switch" />
       </div>
 
       <div class="drawer-item">
         <span>显示 Logo</span>
-        <el-switch v-model="sidebarLogo"
-                   class="drawer-switch" />
+        <el-switch v-model="sidebarLogo" class="drawer-switch" />
       </div>
     </div>
   </div>

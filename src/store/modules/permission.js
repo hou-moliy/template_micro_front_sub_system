@@ -52,8 +52,6 @@ function filterAsyncRouter (asyncRouterMap) {
   });
 }
 
-
-
 export default {
   namespaced: true,
   ...permission,

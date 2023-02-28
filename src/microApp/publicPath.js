@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 
 function publicPath () {
   if (window.__POWERED_BY_QIANKUN__) {
