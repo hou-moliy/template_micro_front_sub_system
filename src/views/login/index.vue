@@ -80,6 +80,7 @@
 import { getCodeImg } from "@/api/login";
 import Cookies from "js-cookie";
 import { encrypt, decrypt } from "@/utils/jsencrypt";
+import { getToken } from "@/utils/auth";
 const defaultSettings = require("@/settings");
 
 export default {
@@ -128,10 +129,12 @@ export default {
   },
   methods: {
     getCode () {
-      getCodeImg().then(res => {
-        this.codeUrl = "data:image/gif;base64," + res.img;
-        this.loginForm.uuid = res.uuid;
-      });
+      if (getToken) {
+        getCodeImg().then(res => {
+          this.codeUrl = "data:image/gif;base64," + res.img;
+          this.loginForm.uuid = res.uuid;
+        });
+      }
     },
     getCookie () {
       const username = Cookies.get("username");
